@@ -1,2 +1,2 @@
-# Santa-tracker.net
+# santatracker.net
 Simple API for tracking Santa's journey over Christmas 

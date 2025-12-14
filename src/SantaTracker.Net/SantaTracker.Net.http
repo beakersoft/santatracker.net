@@ -1,0 +1,6 @@
+@SantaTracker.Net_HostAddress = http://localhost:5146
+
+GET {{SantaTracker.Net_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

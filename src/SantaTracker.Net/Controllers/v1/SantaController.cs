@@ -1,11 +1,13 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SantaTracker.Net.Application.Features;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SantaTracker.Net.Controllers.v1
 {
+    [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class SantaController : ControllerBase
     {
         /// <summary>

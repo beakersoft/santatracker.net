@@ -17,6 +17,8 @@ namespace SantaTracker.Net
                 .AddHealthChecks();
 
             services.AddTransient<IGetSantaLocationHandler, GetSantaLocationHandler>();
+
+            services.AddHttpClient<IGetSantaLocationHandler, GetSantaLocationHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

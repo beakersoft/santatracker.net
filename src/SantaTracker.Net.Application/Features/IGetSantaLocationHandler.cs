@@ -18,6 +18,7 @@ namespace SantaTracker.Net.Application.Features
     /// <inheritdoc />
     public sealed class GetSantaLocationHandler(HttpClient httpClient) : IGetSantaLocationHandler
     {
+        // Move this and cach the result
         private const string RouteUrl =
             "https://firebasestorage.googleapis.com/v0/b/santa-tracker-firebase.appspot.com/o/route%2Fsanta_en.json?alt=media";
 

@@ -55,3 +55,4 @@ nunit-*.xml
 /src/SantaTracker.Net/.vs/SantaTracker.Net
 /src/SantaTracker.Net/.vs/ProjectEvaluation
 /src/.vs
+/src/SantaTracker.Net.WebApi/.vs

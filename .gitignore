@@ -54,3 +54,4 @@ TestResult.xml
 nunit-*.xml
 /src/SantaTracker.Net/.vs/SantaTracker.Net
 /src/SantaTracker.Net/.vs/ProjectEvaluation
+/src/.vs

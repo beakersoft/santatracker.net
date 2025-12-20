@@ -1,4 +1,4 @@
-﻿namespace SantaTracker.Net.Application.Features
+﻿namespace SantaTracker.Net.Contracts.Dtos
 {
     public sealed class SantaRouteDto
     {

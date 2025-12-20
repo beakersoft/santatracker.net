@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using SantaTracker.Net.Contracts.Dtos;
 using SantaTracker.Net.Contracts.Responses;
 
 namespace SantaTracker.Net.Application.Features
@@ -18,7 +19,7 @@ namespace SantaTracker.Net.Application.Features
     /// <inheritdoc />
     public sealed class GetSantaLocationHandler(HttpClient httpClient) : IGetSantaLocationHandler
     {
-        // Move this and cach the result
+        // Move this and cach the result into an infra, but hit behind an interface (IGetSantaLocations) with the httpclient in there
         private const string RouteUrl =
             "https://firebasestorage.googleapis.com/v0/b/santa-tracker-firebase.appspot.com/o/route%2Fsanta_en.json?alt=media";
 

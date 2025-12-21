@@ -1,5 +1,7 @@
-﻿using SantaTracker.Net.Application.Features;
+﻿using SantaTracker.Net.Application;
+using SantaTracker.Net.Application.Features;
 using SantaTracker.Net.Extensions;
+using SantaTracker.Net.Infrastructure.Data;
 
 namespace SantaTracker.Net
 {
@@ -18,7 +20,7 @@ namespace SantaTracker.Net
 
             services.AddTransient<IGetSantaLocationHandler, GetSantaLocationHandler>();
 
-            services.AddHttpClient<IGetSantaLocationHandler, GetSantaLocationHandler>();
+            services.AddHttpClient<ITrackingDataProvider, FirebaseProvider>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

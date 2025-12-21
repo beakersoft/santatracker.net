@@ -13,7 +13,12 @@
         /// <summary>
         ///     Current City.
         /// </summary>
-        public string City { get; init; } = string.Empty;
+        public string FromCity { get; init; } = string.Empty;
+
+        /// <summary>
+        ///     Next City.
+        /// </summary>
+        public string ToCity { get; init; } = string.Empty;
 
         /// <summary>
         ///     Current Country.

@@ -11,3 +11,6 @@ docker build -f src/SantaTracker.Net.WebApi/Dockerfile -t santa-tracker-api:loca
 Run
 
 docker run -p 8080:8080 --name santa-tracker santa-tracker-api:local
+
+
+2025-12-24T21:15:00Z

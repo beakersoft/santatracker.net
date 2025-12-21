@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SantaTracker.Net.Application\SantaTracker.Net.Application.csproj" />
+    <ProjectReference Include="..\SantaTracker.Net.Infrastructure\SantaTracker.Net.Infrastructure.csproj" />
   </ItemGroup>
 
 	<PropertyGroup>

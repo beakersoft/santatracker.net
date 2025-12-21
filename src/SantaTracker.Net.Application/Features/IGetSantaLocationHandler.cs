@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-using SantaTracker.Net.Contracts.Dtos;
-using SantaTracker.Net.Contracts.Responses;
+﻿using SantaTracker.Net.Contracts.Responses;
 
 namespace SantaTracker.Net.Application.Features
 {
@@ -13,59 +11,86 @@ namespace SantaTracker.Net.Application.Features
         ///     Get Santa's current location.
         /// </summary>
         /// <returns></returns>
-        Task<GetSantaLocationResponse> GeAsync(DateTime utcNow);
+        Task<GetSantaLocationResponse> GeAsync(DateTime? utcNow = null);
     }
 
     /// <inheritdoc />
-    public sealed class GetSantaLocationHandler(HttpClient httpClient) : IGetSantaLocationHandler
+    public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataProvider) : IGetSantaLocationHandler
     {
-        // Move this and cach the result into an infra, but hit behind an interface (IGetSantaLocations) with the httpclient in there
-        private const string RouteUrl =
-            "https://firebasestorage.googleapis.com/v0/b/santa-tracker-firebase.appspot.com/o/route%2Fsanta_en.json?alt=media";
-
-        public async Task<GetSantaLocationResponse> GeAsync(DateTime utcNow)
+        public async Task<GetSantaLocationResponse> GeAsync(DateTime? utcNow = null)
         {
             var defaultResponse = new GetSantaLocationResponse
             {
+                Status = "Stopped",
                 Description = "Waiting for Christmas!",
-                City = "North Pole",
+                FromCity = "North Pole",
                 Country = "Arctic",
             };
 
-            var route = await httpClient.GetFromJsonAsync<SantaRouteDto>(RouteUrl);
+            utcNow ??= DateTime.UtcNow;
 
-            // TODO - normalize the dates in the incoming data to be the current year, so we can use DateTime.UtcNow
-            // TODO - this here kinda becomes an e2e test
+            var trackingData = await trackingDataProvider.GetSantaRouteDataAsync();
 
-            var stops = route?.Destinations ?? [];
+            var stops = trackingData?.Destinations ?? [];
 
-            var from = route.Destinations[0];
-            var to = route.Destinations[1];
-
-            // Interpret as epoch milliseconds
-            var dep = DateTimeOffset.FromUnixTimeMilliseconds(from.Departure).UtcDateTime;
-            var arr = DateTimeOffset.FromUnixTimeMilliseconds(to.Arrival).UtcDateTime;
-
-            // Pick a time halfway between departure and arrival
-            var inFlightNow = dep + TimeSpan.FromTicks((arr - dep).Ticks / 2);
-            var now = new DateTimeOffset(inFlightNow).ToUnixTimeMilliseconds();
-
-            for (var i = 0; i < stops.Count - 1; i++)
+            if (utcNow < FromMs(stops[0].Departure))
             {
-                var current = stops[i];
-                var next = stops[i + 1];
+                return defaultResponse;
+            }
 
-                if (now > current.Departure && now < next.Arrival)
+            long nowMs = new DateTimeOffset(utcNow.Value).ToUnixTimeMilliseconds();
+
+            foreach (var stop in stops)
+            {
+                if (stop.City == "London")
+                {
+                    var londonDate = DateTimeOffset.FromUnixTimeMilliseconds(stop.Arrival).UtcDateTime;
+
+                    //london showing at 01:17
+                }
+
+                if (nowMs >= stop.Arrival && nowMs <= stop.Departure)
                 {
                     return new GetSantaLocationResponse
                     {
                         Status = "InFlight",
-                        City = next.City
+                        FromCity = stop.City,
+                        Country = stop.Region
                     };
                 }
             }
 
-            return new GetSantaLocationResponse { Status = "Stopped" };
+            //for (var i = 0; i < stops.Count - 1; i++)
+            //{
+            //    var from = stops[i];
+            //    var to = stops[i + 1];
+
+            //    var dep = FromMs(from.Departure);
+            //    var arr = FromMs(to.Arrival);
+
+            //    if (utcNow >= dep && utcNow <= arr)
+            //    {
+            //        var t = (utcNow - dep).Value.TotalMilliseconds /
+            //                (arr - dep).TotalMilliseconds;
+
+            //        return new GetSantaLocationResponse
+            //        {
+            //            Status = "InFlight",
+            //            FromCity = from.City,
+            //            ToCity = to.City,
+            //            Country = from.Region
+            //        };
+            //    }
+            //}
+
+            return defaultResponse;
+        }
+
+        private static DateTime FromMs(long unixMilliseconds)
+        {
+            return DateTimeOffset
+                .FromUnixTimeMilliseconds(unixMilliseconds)
+                .UtcDateTime;
         }
     }
 }

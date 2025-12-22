@@ -3,7 +3,7 @@ using Serilog;
 using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
-namespace SantaTracker.Net
+namespace SantaTracker.Net.WebApi
 {
     public class Program
     {
@@ -13,38 +13,12 @@ namespace SantaTracker.Net
         {
             var hostBuilder = CreateHostBuilder().Build();
             hostBuilder.Run();
-
-            //var builder = WebApplication.CreateBuilder(args);
-
-            //// Add services to the container.
-
-            //builder.Services.AddControllers();
-            //// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            //builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
-
-            //var app = builder.Build();
-
-            //// Configure the HTTP request pipeline.
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    app.UseSwagger();
-            //    app.UseSwaggerUI();
-            //}
-
-            //app.UseHttpsRedirection();
-
-            //app.UseAuthorization();
-
-            //app.MapControllers();
-
-            //app.Run();
         }
 
         public static IHostBuilder CreateHostBuilder()
         {
             DotNetEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-            HostBuilderContext hostBuilderContext = null;
+            HostBuilderContext? hostBuilderContext = null;
 
             return new HostBuilder()
                 .ConfigureAppConfiguration(
@@ -74,7 +48,7 @@ namespace SantaTracker.Net
                 .UseDefaultServiceProvider(
                     config =>
                     {
-                        var validate = hostBuilderContext.HostingEnvironment.IsDevelopment();
+                        var validate = hostBuilderContext!.HostingEnvironment.IsDevelopment();
                         config.ValidateScopes = validate;
                         config.ValidateOnBuild = validate;
                     })
@@ -101,6 +75,7 @@ namespace SantaTracker.Net
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("System", LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                .WriteTo.Console()
                 .MinimumLevel.Information();
 
             return loggerConfig.CreateLogger();

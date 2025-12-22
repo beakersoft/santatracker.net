@@ -1,11 +1,11 @@
 ﻿using SantaTracker.Net.Application;
 using SantaTracker.Net.Application.Features;
-using SantaTracker.Net.Extensions;
 using SantaTracker.Net.Infrastructure.Data;
+using SantaTracker.Net.WebApi.Extensions;
 
-namespace SantaTracker.Net
+namespace SantaTracker.Net.WebApi
 {
-    public class Startup(IConfiguration configuration)
+    public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
@@ -13,6 +13,7 @@ namespace SantaTracker.Net
 
             services
                 .AddLogging()
+                .AddMemoryCache()
                 .AddApiVersionConfig()
                 .AddSwagger()
                 .AddOptions()

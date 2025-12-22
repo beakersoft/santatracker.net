@@ -1,20 +1,30 @@
 ﻿using System.Net.Http.Json;
 using SantaTracker.Net.Application;
 using SantaTracker.Net.Contracts.Dtos;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace SantaTracker.Net.Infrastructure.Data
 {
     /// <summary>
     /// Firebase provider for santa data.
     /// </summary>
-    public class FirebaseProvider(HttpClient httpClient) : ITrackingDataProvider
+    public class FirebaseProvider(
+        HttpClient httpClient,
+        IMemoryCache cache) : ITrackingDataProvider
     {
         private const string RouteUrl =
             "https://firebasestorage.googleapis.com/v0/b/santa-tracker-firebase.appspot.com/o/route%2Fsanta_en.json?alt=media";
 
+        private const string CacheKey = "SantaRoute";
+
         /// <inheritdoc/>
         public async Task<SantaRouteDto> GetSantaRouteDataAsync()
         {
+            if (cache.TryGetValue(CacheKey, out SantaRouteDto? cached))
+            {
+                return cached!;
+            }
+
             var route = await httpClient.GetFromJsonAsync<SantaRouteDto>(RouteUrl);
 
             if (route?.Destinations.Count == 0)
@@ -22,52 +32,25 @@ namespace SantaTracker.Net.Infrastructure.Data
                 throw new Exception("Could not get firebase santa data");
             }
 
-            //var yearNow = DateTime.UtcNow.Year;
+            var dateNowUtc = DateTime.UtcNow;
 
-            //foreach (var stop in route!.Destinations)
-            //{
-            //    var dt2019Arrival = DateTimeOffset.FromUnixTimeMilliseconds(stop.Arrival).UtcDateTime;
-            //    var dt2019Departure = DateTimeOffset.FromUnixTimeMilliseconds(stop.Departure).UtcDateTime;
+            foreach (var stop in route!.Destinations)
+            {
+                var arrivalUtc = DateTimeOffset.FromUnixTimeMilliseconds(stop.Arrival).UtcDateTime;
+                var departUtc = DateTimeOffset.FromUnixTimeMilliseconds(stop.Departure).UtcDateTime;
 
-            //    // Rebuild DateTime for this year
-            //    var arrivalThisYear = new DateTime(
-            //        yearNow,
-            //        dt2019Arrival.Month,
-            //        dt2019Arrival.Day,
-            //        dt2019Arrival.Hour,
-            //        dt2019Arrival.Minute,
-            //        dt2019Arrival.Second,
-            //        DateTimeKind.Utc);
+                var yearDelta = dateNowUtc.Year - arrivalUtc.Year;
+                arrivalUtc = arrivalUtc.AddYears(yearDelta);
+                departUtc = departUtc.AddYears(yearDelta);
 
-            //    var departureThisYear = new DateTime(
-            //        yearNow,
-            //        dt2019Departure.Month,
-            //        dt2019Departure.Day,
-            //        dt2019Departure.Hour,
-            //        dt2019Departure.Minute,
-            //        dt2019Departure.Second,
-            //        DateTimeKind.Utc);
+                stop.Arrival = new DateTimeOffset(arrivalUtc).ToUnixTimeMilliseconds();
+                stop.Departure = new DateTimeOffset(departUtc).ToUnixTimeMilliseconds();
+            }
 
-            //    // Convert to Unix milliseconds via DateTimeOffset
-            //    stop.Arrival = new DateTimeOffset(arrivalThisYear).ToUnixTimeMilliseconds();
-            //    stop.Departure = new DateTimeOffset(departureThisYear).ToUnixTimeMilliseconds();
-            //}
-
-            // normalize the dates in the data to this year
-            //var routeStart = DateTimeOffset
-            //    .FromUnixTimeMilliseconds(route.Destinations[0].Departure)
-            //    .UtcDateTime;
-
-            //var targetBase =
-            //    new DateTime(DateTime.UtcNow.Year, 12, 24, 0, 0, 0, DateTimeKind.Utc);
-
-            //var offset = targetBase - routeStart;
-
-            //foreach (var stop in route.Destinations)
-            //{
-            //    stop.Arrival += (long)offset.TotalMilliseconds;
-            //    stop.Departure += (long)offset.TotalMilliseconds;
-            //}
+            cache.Set(
+                CacheKey,
+                route,
+                TimeSpan.FromMinutes(10));
 
             return route;
         }

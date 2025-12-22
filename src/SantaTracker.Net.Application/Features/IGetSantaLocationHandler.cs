@@ -31,57 +31,32 @@ namespace SantaTracker.Net.Application.Features
 
             var trackingData = await trackingDataProvider.GetSantaRouteDataAsync();
 
-            var stops = trackingData?.Destinations ?? [];
+            var stops = trackingData.Destinations;
 
             if (utcNow < FromMs(stops[0].Departure))
             {
                 return defaultResponse;
             }
 
-            long nowMs = new DateTimeOffset(utcNow.Value).ToUnixTimeMilliseconds();
-
-            foreach (var stop in stops)
+            for (var i = 0; i < stops.Count - 1; i++)
             {
-                if (stop.City == "London")
-                {
-                    var londonDate = DateTimeOffset.FromUnixTimeMilliseconds(stop.Arrival).UtcDateTime;
+                var from = stops[i];
+                var to = stops[i + 1];
 
-                    //london showing at 01:17
-                }
+                var arrivalDateTime = DateTimeOffset.FromUnixTimeMilliseconds(stops[i].Arrival).UtcDateTime;
+                var departureDateTime = DateTimeOffset.FromUnixTimeMilliseconds(stops[i].Departure).UtcDateTime;
 
-                if (nowMs >= stop.Arrival && nowMs <= stop.Departure)
+                if (utcNow >= arrivalDateTime && utcNow <= departureDateTime)
                 {
                     return new GetSantaLocationResponse
                     {
                         Status = "InFlight",
-                        FromCity = stop.City,
-                        Country = stop.Region
+                        FromCity = from.City,
+                        ToCity = to.City,
+                        Country = from.Region
                     };
                 }
             }
-
-            //for (var i = 0; i < stops.Count - 1; i++)
-            //{
-            //    var from = stops[i];
-            //    var to = stops[i + 1];
-
-            //    var dep = FromMs(from.Departure);
-            //    var arr = FromMs(to.Arrival);
-
-            //    if (utcNow >= dep && utcNow <= arr)
-            //    {
-            //        var t = (utcNow - dep).Value.TotalMilliseconds /
-            //                (arr - dep).TotalMilliseconds;
-
-            //        return new GetSantaLocationResponse
-            //        {
-            //            Status = "InFlight",
-            //            FromCity = from.City,
-            //            ToCity = to.City,
-            //            Country = from.Region
-            //        };
-            //    }
-            //}
 
             return defaultResponse;
         }

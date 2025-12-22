@@ -2,7 +2,7 @@
 using Asp.Versioning;
 using Microsoft.OpenApi;
 
-namespace SantaTracker.Net.Extensions
+namespace SantaTracker.Net.WebApi.Extensions
 {
     public static class ServiceCollectionExtensions
     {

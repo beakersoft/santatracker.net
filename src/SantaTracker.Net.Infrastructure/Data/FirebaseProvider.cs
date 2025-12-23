@@ -1,12 +1,12 @@
 ﻿using System.Net.Http.Json;
+using Microsoft.Extensions.Caching.Memory;
 using SantaTracker.Net.Application;
 using SantaTracker.Net.Contracts.Dtos;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace SantaTracker.Net.Infrastructure.Data
 {
     /// <summary>
-    /// Firebase provider for santa data.
+    ///     Firebase provider for santa data.
     /// </summary>
     public class FirebaseProvider(
         HttpClient httpClient,
@@ -17,7 +17,7 @@ namespace SantaTracker.Net.Infrastructure.Data
 
         private const string CacheKey = "SantaRoute";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public async Task<SantaRouteDto> GetSantaRouteDataAsync()
         {
             if (cache.TryGetValue(CacheKey, out SantaRouteDto? cached))
@@ -45,12 +45,18 @@ namespace SantaTracker.Net.Infrastructure.Data
 
                 stop.Arrival = new DateTimeOffset(arrivalUtc).ToUnixTimeMilliseconds();
                 stop.Departure = new DateTimeOffset(departUtc).ToUnixTimeMilliseconds();
+                stop.ArrivalUtc = arrivalUtc;
+                stop.DepartureUtc = departUtc;
             }
+
+            route.Destinations = route.Destinations.OrderBy(d => d.ArrivalUtc).ToList();
+
+            var luke = route.Destinations.Last();
 
             cache.Set(
                 CacheKey,
                 route,
-                TimeSpan.FromMinutes(10));
+                TimeSpan.FromMinutes(5));
 
             return route;
         }

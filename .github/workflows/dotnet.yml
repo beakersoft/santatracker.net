@@ -38,6 +38,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
+        if: github.ref == 'refs/heads/main'
+        run: |
         uses: docker/build-push-action@v5
         with:
           context: src

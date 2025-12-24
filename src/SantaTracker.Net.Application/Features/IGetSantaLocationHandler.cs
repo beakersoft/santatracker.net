@@ -99,7 +99,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
                     FromCity = route[i].City,
                     ToCity = route[i + 1].City,
                     Country = route[i].Region,
-                    Description = $"In flight from {route[i].City} to {route[i + 1].City}",
+                    Description = $"In flight from {route[i].City} {route[i].Region} to {route[i + 1].City}",
                     Status = SantaStatus.InFlight.ToString()
                 };
             }

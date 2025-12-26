@@ -48,9 +48,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: github.ref == 'refs/heads/main'
-        run: |
-            uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5
+        run: |            
             with:
               context: src
               file: src/SantaTracker.Net.WebApi/Dockerfile

@@ -31,9 +31,7 @@ jobs:
   docker:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
     needs: build
 
     steps:
@@ -48,13 +46,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        run: |            
-            with:
-              context: src
-              file: src/SantaTracker.Net.WebApi/Dockerfile
-              push: true
-              tags: |
+        uses: docker/build-push-action@v5        
+        with:
+            context: src
+            file: src/SantaTracker.Net.WebApi/Dockerfile
+            push: true
+            tags: |
                 ghcr.io/${{ github.repository_owner }}/santa-tracker-api:latest
                 ghcr.io/${{ github.repository_owner }}/santa-tracker-api:${{ github.sha }}
 

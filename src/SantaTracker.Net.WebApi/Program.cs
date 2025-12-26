@@ -7,7 +7,7 @@ namespace SantaTracker.Net.WebApi;
 
 public class Program
 {
-    public static string DotNetEnvironment { get; private set; }
+    public static string DotNetEnvironment { get; private set; } = "Development";
 
     public static void Main()
     {

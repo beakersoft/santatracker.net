@@ -1,4 +1,5 @@
 using SantaTracker.Net.Contracts.Dtos;
+using SantaTracker.Net.Contracts.Enums;
 using SantaTracker.Net.Contracts.Responses;
 
 namespace SantaTracker.Net.Application.Features;

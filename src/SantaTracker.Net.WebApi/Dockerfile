@@ -9,7 +9,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy csproj files first (better caching)
+# Copy solution-wide and csproj files first (caching)
+COPY Directory.Build.props ./
+COPY Directory.Packages.props ./
+COPY global.json ./
 COPY SantaTracker.Net.WebApi/SantaTracker.Net.WebApi.csproj SantaTracker.Net.WebApi/
 COPY SantaTracker.Net.Application/SantaTracker.Net.Application.csproj SantaTracker.Net.Application/
 COPY SantaTracker.Net.Contracts/SantaTracker.Net.Contracts.csproj SantaTracker.Net.Contracts/

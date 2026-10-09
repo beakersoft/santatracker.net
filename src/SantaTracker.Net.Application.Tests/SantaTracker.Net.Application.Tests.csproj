@@ -11,4 +11,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SantaTracker.Net.Infrastructure\SantaTracker.Net.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaTracker.Net.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaTracker.Net.Application.Tests", "SantaTracker.Net.Application.Tests\SantaTracker.Net.Application.Tests.csproj", "{DDA55823-FB05-46D1-9B50-58094D55160E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaTracker.Net.Infrastructure.Tests", "SantaTracker.Net.Infrastructure.Tests\SantaTracker.Net.Infrastructure.Tests.csproj", "{4F1BC16D-BEF9-4352-BF76-280EFB2C3E27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DDA55823-FB05-46D1-9B50-58094D55160E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDA55823-FB05-46D1-9B50-58094D55160E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDA55823-FB05-46D1-9B50-58094D55160E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F1BC16D-BEF9-4352-BF76-280EFB2C3E27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F1BC16D-BEF9-4352-BF76-280EFB2C3E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F1BC16D-BEF9-4352-BF76-280EFB2C3E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F1BC16D-BEF9-4352-BF76-280EFB2C3E27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

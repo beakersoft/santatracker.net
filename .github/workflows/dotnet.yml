@@ -11,20 +11,26 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: src
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
-       
+        with:
+          global-json-file: src/global.json
+
       - name: Restore dependencies
-        run: dotnet restore src/SantaTracker.Net.sln
+        run: dotnet restore SantaTracker.Net.sln
 
       - name: Build
-        run: dotnet build src/SantaTracker.Net.sln --no-restore
+        run: dotnet build SantaTracker.Net.sln --no-restore
 
       - name: Test
-        run: dotnet test src/SantaTracker.Net.sln --no-build --verbosity normal
+        run: dotnet test --solution SantaTracker.Net.sln --no-build
 
   docker:
     name: Build and Push Docker Image
@@ -32,9 +38,13 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
 
-    steps:        
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
       - uses: actions/checkout@v4
-  
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -46,12 +56,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5        
+        uses: docker/build-push-action@v5
         with:
-            context: src
-            file: src/SantaTracker.Net.WebApi/Dockerfile
-            push: true
-            tags: |
-                ghcr.io/${{ github.repository_owner }}/santa-tracker-api:latest
-                ghcr.io/${{ github.repository_owner }}/santa-tracker-api:${{ github.sha }}
-
+          context: src
+          file: src/SantaTracker.Net.WebApi/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/santa-tracker-api:latest
+            ghcr.io/${{ github.repository_owner }}/santa-tracker-api:${{ github.sha }}

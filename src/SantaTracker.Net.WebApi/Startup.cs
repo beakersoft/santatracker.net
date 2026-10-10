@@ -21,7 +21,7 @@ public class Startup
 
         services.AddTransient<IGetSantaLocationHandler, GetSantaLocationHandler>();
 
-        services.AddHttpClient<ITrackingDataProvider, FirebaseProvider>();
+        services.AddTransient<ITrackingDataProvider, LocalJsonProvider>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

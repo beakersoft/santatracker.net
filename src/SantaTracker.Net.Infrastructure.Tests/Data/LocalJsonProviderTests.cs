@@ -1,14 +1,16 @@
 using SantaTracker.Net.Infrastructure.Data;
 
-namespace SantaTracker.Net.Application.Tests;
+namespace SantaTracker.Net.Infrastructure.Tests.Data;
 
 public class LocalJsonProviderTests
 {
     [Fact]
     public async Task LoadsEntireRouteIncludingKyivWithConsistentUtcTimestamps()
     {
+        // Arrange & Act
         var route = await new LocalJsonProvider().GetSantaRouteDataAsync();
 
+        // Assert
         Assert.Equal(128, route.Destinations.Count);
         Assert.Contains(route.Destinations, stop => stop.City == "Kyiv");
         Assert.All(route.Destinations, stop =>
@@ -29,9 +31,11 @@ public class LocalJsonProviderTests
     public async Task ConvertsLocalArrivalsIncludingSummerTimeFractionalOffsetsAndDateRollover(
         string city, int day, int hour, int minute)
     {
+        // Arrange & Act
         var route = await new LocalJsonProvider().GetSantaRouteDataAsync();
-        var stop = Assert.Single(route.Destinations, stop => stop.City == city);
 
+        // Assert
+        var stop = Assert.Single(route.Destinations, stop => stop.City == city);
         Assert.Equal(new DateTime(stop.ArrivalUtc.Year, 12, day, hour, minute, 0, DateTimeKind.Utc), stop.ArrivalUtc);
     }
 }

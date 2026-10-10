@@ -38,6 +38,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
                 Status = status.ToString(),
                 Description = "Santa has finished his rounds, and is having a well deserved rest! 🎁"
             },
+            SantaStatus.InFlight => GetSantaCityAt(utcNow.Value, trackingData.Destinations),
             _ => GetSantaCityAt(utcNow.Value, trackingData.Destinations)
         };
     }
@@ -56,7 +57,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
             return SantaStatus.NorthPole;
         }
 
-        var firstArrival = ShiftToYear(FromMs(route.First().Arrival), utcNow.Year);
+        var firstArrival = ShiftToYear(FromMs(route[0].Arrival), utcNow.Year);
         var lastDeparture = ShiftToYear(FromMs(route[^2].Departure), utcNow.Year);
 
         return utcNow < firstArrival
@@ -74,7 +75,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
 
     private static GetSantaLocationResponse GetSantaCityAt(
         DateTime utcNow,
-        IReadOnlyList<SantaDestinationDto> route)
+        List<SantaDestinationDto> route)
     {
         // At a city now
         var atACity = route.FirstOrDefault(x => utcNow >= x.ArrivalUtc && utcNow <= x.DepartureUtc);

@@ -1,0 +1,29 @@
+services:
+  santa-tracker:
+    image: ghcr.io/beakersoft/santa-tracker-api:latest
+    restart: unless-stopped
+    pull_policy: always
+    networks:
+      - santa-tracker
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - santa-tracker
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - santa-tracker
+
+networks:
+  santa-tracker:
+
+volumes:
+  caddy_data:
+  caddy_config:

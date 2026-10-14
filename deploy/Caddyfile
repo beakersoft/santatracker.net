@@ -1,0 +1,3 @@
+api.sleighwatch.com {
+    reverse_proxy santa-tracker:8080
+}

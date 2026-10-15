@@ -11,7 +11,7 @@ public class Program
 
     public static void Main()
     {
-        IHost hostBuilder = CreateHostBuilder().Build();
+        var hostBuilder = CreateHostBuilder().Build();
         hostBuilder.Run();
     }
 
@@ -47,7 +47,7 @@ public class Program
             .UseDefaultServiceProvider(
                 config =>
                 {
-                    bool validate = hostBuilderContext!.HostingEnvironment.IsDevelopment();
+                    var validate = hostBuilderContext!.HostingEnvironment.IsDevelopment();
                     config.ValidateScopes = validate;
                     config.ValidateOnBuild = validate;
                 })
@@ -67,7 +67,7 @@ public class Program
     /// <returns></returns>
     private static ILogger CreateLogger(IHostEnvironment hostContext)
     {
-        LoggerConfiguration loggerConfig = new LoggerConfiguration()
+        var loggerConfig = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithProperty("API", hostContext.ApplicationName)
             .Enrich.WithProperty("env", hostContext.EnvironmentName)

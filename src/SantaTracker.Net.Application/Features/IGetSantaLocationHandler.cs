@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using SantaTracker.Net.Contracts.Dtos;
 using SantaTracker.Net.Contracts.Enums;
 using SantaTracker.Net.Contracts.Responses;
@@ -17,7 +18,9 @@ public interface IGetSantaLocationHandler
 }
 
 /// <inheritdoc />
-public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataProvider) : IGetSantaLocationHandler
+public sealed class GetSantaLocationHandler(
+    ITrackingDataProvider trackingDataProvider,
+    IStringLocalizer stringLocalizer) : IGetSantaLocationHandler
 {
     public async Task<GetSantaLocationResponse> GeAsync(DateTime? utcNow = null)
     {
@@ -31,12 +34,12 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
             SantaStatus.NorthPole => new GetSantaLocationResponse
             {
                 Status = status.ToString(),
-                Description = "Santa is preparing at the North Pole 🎅"
+                Description = stringLocalizer["SantaAtNorthPole"]
             },
             SantaStatus.Delivered => new GetSantaLocationResponse
             {
                 Status = status.ToString(),
-                Description = "Santa has finished his rounds, and is having a well deserved rest! 🎁"
+                Description = stringLocalizer["SantaHaFinishedDeliveringPresents"]
             },
             SantaStatus.InFlight => GetSantaCityAt(utcNow.Value, trackingData.Destinations),
             _ => GetSantaCityAt(utcNow.Value, trackingData.Destinations)
@@ -73,7 +76,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
         return utc.AddYears(delta);
     }
 
-    private static GetSantaLocationResponse GetSantaCityAt(
+    private GetSantaLocationResponse GetSantaCityAt(
         DateTime utcNow,
         List<SantaDestinationDto> route)
     {
@@ -85,7 +88,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
             {
                 Country = atACity.Region,
                 FromCity = atACity.City,
-                Description = $"Delivering presents in {atACity.City}, {atACity.Region}",
+                Description = stringLocalizer["SantaIsDeliveringPresentsIn", atACity.City, atACity.Region],
                 Status = SantaStatus.InFlight.ToString()
             };
         }
@@ -101,7 +104,7 @@ public sealed class GetSantaLocationHandler(ITrackingDataProvider trackingDataPr
                     FromCity = route[i].City,
                     ToCity = route[i + 1].City,
                     Country = route[i].Region,
-                    Description = $"In flight from {route[i].City} {route[i].Region} to {route[i + 1].City}",
+                    Description = stringLocalizer["SantaInFlightBetweenCities", route[i].City, route[i].Region, route[i + 1].City],
                     Status = SantaStatus.InFlight.ToString()
                 };
             }

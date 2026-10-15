@@ -12,6 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\Localizations\*.json" Link="Localizations\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SantaTracker.Net.Application\SantaTracker.Net.Application.csproj" />
     <ProjectReference Include="..\SantaTracker.Net.Infrastructure\SantaTracker.Net.Infrastructure.csproj" />
   </ItemGroup>

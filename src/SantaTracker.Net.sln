@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaTracker.Net.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantaTracker.Net.Infrastructure.Tests", "SantaTracker.Net.Infrastructure.Tests\SantaTracker.Net.Infrastructure.Tests.csproj", "{4F1BC16D-BEF9-4352-BF76-280EFB2C3E27}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Localizations", "Localizations", "{0F0CD5AC-BCA7-4EF0-8648-649A30012D20}"
+	ProjectSection(SolutionItems) = preProject
+		Localizations\response.en-US.json = Localizations\response.en-US.json
+		Localizations\response.es-ES.json = Localizations\response.es-ES.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

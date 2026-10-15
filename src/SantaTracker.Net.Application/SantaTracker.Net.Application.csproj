@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Localizer.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SantaTracker.Net.Contracts\SantaTracker.Net.Contracts.csproj" />
   </ItemGroup>
 

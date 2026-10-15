@@ -19,9 +19,11 @@ public class SantaController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(GetSantaLocationResponse), 200)]
     [SwaggerOperation(Tags = ["Santa"])]
-    public async Task<IActionResult> GetSantaLocationAsync([FromServices] IGetSantaLocationHandler handler)
+    public async Task<IActionResult> GetSantaLocationAsync(
+        [FromQuery] string? lang,
+        [FromServices] IGetSantaLocationHandler handler)
     {
-        GetSantaLocationResponse location = await handler.GeAsync();
+        var location = await handler.GeAsync();
 
         return Ok(location);
     }
@@ -35,9 +37,10 @@ public class SantaController : ControllerBase
     [SwaggerOperation(Tags = ["Santa"])]
     public async Task<IActionResult> GetSantaLocationTestAsync(
         [FromServices] IGetSantaLocationHandler handler,
-        [Required][FromQuery] DateTime testDateTime)
+        [Required][FromQuery] DateTime testDateTime,
+        [FromQuery] string? lang)
     {
-        GetSantaLocationResponse location = await handler.GeAsync(testDateTime);
+        var location = await handler.GeAsync(testDateTime);
 
         return Ok(location);
     }

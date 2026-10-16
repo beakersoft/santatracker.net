@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Send feedback about SleighWatch.">
+  <link rel="canonical" href="https://sleighwatch.com/feedback/">
+  <title>Feedback — SleighWatch</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    .feedback-form { max-width: 620px; margin-top: 2.5rem; display: grid; gap: 1.2rem; }
+    .feedback-form label { display: grid; gap: .4rem; font-weight: 700; }
+    .feedback-form input, .feedback-form textarea { width: 100%; padding: .7rem; border: 1px solid #396477; border-radius: .3rem; background: #12384a; color: #fff3d6; font: inherit; }
+    .feedback-form .button { border: 0; justify-self: start; cursor: pointer; }
+    .trap { position: absolute; left: -9999px; }
+  </style>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="/">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/">Home</a><a href="/api/">API</a><a href="/dakboard/">DAKboard</a><a href="/feedback/" aria-current="page">Feedback</a></nav></header>
+  <main class="page">
+    <p class="eyebrow">Get in touch</p>
+    <h1>Help make SleighWatch better.</h1>
+    <p class="lead">Have an idea, found a problem, or made something festive with the API? I’d love to hear from you.</p>
+    <form class="feedback-form" action="https://formspree.io/f/mjygjjka" method="POST">
+      <label>Your name<input name="name" autocomplete="name"></label>
+      <label>Email address<input name="email" type="email" autocomplete="email" required></label>
+      <label>Your message<textarea name="message" rows="6" required></textarea></label>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="trap">
+      <button class="button" type="submit">Send feedback</button>
+    </form>
+  </main>
+  <footer><span>© SleighWatch</span><a href="/feedback/">Feedback</a></footer>
+  <script src="/assets/site.js"></script>
+</body>
+</html>

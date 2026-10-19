@@ -1,6 +1,8 @@
 services:
   santa-tracker:
     image: ghcr.io/beakersoft/santa-tracker-api:latest
+    env_file:
+      - .env
     restart: unless-stopped
     pull_policy: always
     networks:

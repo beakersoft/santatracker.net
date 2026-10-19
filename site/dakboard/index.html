@@ -1,1 +1,156 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Use SleighWatch on your DAKboard Christmas display."><link rel="canonical" href="https://sleighwatch.com/dakboard/"><title>SleighWatch for DAKboard</title><link rel="stylesheet" href="/assets/styles.css"></head><body><header class="site-header"><a class="brand" href="/">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/">Home</a><a href="/api/">API</a><a href="/dakboard/" aria-current="page">DAKboard</a><a href="/feedback/">Feedback</a></nav></header><main class="page"><p class="eyebrow">For family displays</p><h1>SleighWatch for DAKboard</h1><p class="lead">A simple way to add Santa’s live journey to your Christmas dashboard.</p><div class="coming"><h2>Template coming soon</h2><p>We are building a ready-to-use DAKboard template, plus a short guide for adding it to your own display.</p></div></main><footer><span>© SleighWatch</span><a href="/feedback/">Feedback</a></footer><script src="/assets/site.js"></script></body></html>
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Add the SleighWatch Santa tracker to your DAKboard display with this setup guide."
+    />
+    <link rel="canonical" href="https://sleighwatch.com/dakboard/" />
+    <meta property="og:title" content="SleighWatch for DAKboard" />
+    <meta
+      property="og:description"
+      content="Bring Santa’s journey to your Christmas display with SleighWatch and DAKboard."
+    />
+    <meta property="og:url" content="https://sleighwatch.com/dakboard/" />
+    <meta property="og:type" content="website" />
+    <title>SleighWatch for DAKboard</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="SleighWatch home"
+        >Sleigh<span>Watch</span></a
+      >
+      <button class="menu" aria-expanded="false" aria-controls="navigation">
+        Menu
+      </button>
+      <nav id="navigation">
+        <a href="/">Home</a><a href="/api/">API</a
+        ><a href="/dakboard/" aria-current="page">DAKboard</a
+        ><a href="/feedback/">Feedback</a>
+      </nav>
+    </header>
+    <main>
+      <section class="dakboard-hero">
+        <p class="eyebrow">A little Christmas magic for your display</p>
+        <h1>Santa’s journey, right on your DAKboard.</h1>
+        <p class="lead">
+          Follow along with SleighWatch and bring a live Santa tracker to your
+          family dashboard.
+        </p>
+        <a class="button" href="#config-guide"
+          >View the setup guide <span aria-hidden="true">↓</span></a
+        >
+      </section>
+
+      <section class="dakboard-previews" aria-labelledby="previews-title">
+        <div class="section-heading">
+          <p class="eyebrow">See it in action</p>
+          <h2 id="previews-title">Made for your Christmas display</h2>
+          <p>Preview how the SleighWatch template will look on your screen.</p>
+        </div>
+        <div class="preview-grid">
+          <figure class="preview-card">
+            <img
+              class="screenshot-image screenshot-wide"
+              src="/assets/img/SantaPrep2.png"
+              alt="SleighWatch on a DAKboard display, showing weather and Santa preparing at the North Pole"
+            >
+            <figcaption>
+              <strong>Keep up with Santa</strong
+              ><span>A festive glance at where he is now.</span>
+            </figcaption>
+          </figure>
+          <figure class="preview-card">
+            <img
+              class="screenshot-image screenshot-detail"
+              src="/assets/img/SantaPrep.png"
+              alt="Close-up of the SleighWatch Santa is preparing at the North Pole widget"
+            >
+            <figcaption>
+              <strong>Fits right into your board</strong
+              ><span
+                >Designed to sit alongside your family’s everyday widgets.</span
+              >
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section
+        class="guide-section"
+        id="config-guide"
+        aria-labelledby="guide-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">Get set up</p>
+          <h2 id="guide-title">Config guide</h2>
+          <p>Add your step-by-step instructions here.</p>
+        </div>
+        <ol class="guide-steps">
+          <li>
+            <span class="step-number">01</span>
+            <div>
+              <h3>Before you begin</h3>
+              <p class="guide-copy">
+                Have your Dakboard account setup, and your layout ready to edit.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">02</span>
+            <div>
+              <h3>Add the widget</h3>
+              <p class="guide-copy">
+                <p>Add a new block to your layout, and pick the External
+                  data JSON type (called fetch) </p>
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">03</span>
+            <div>
+              <h3>Configure your display</h3>
+              <p class="guide-copy">
+                <p> Leave the authentication type as 'None', and add the url
+                  https://api.sleighwatch.com/api/santa. Give it a few seconds
+                  and it should go and grab the fields you can use</p>
+                <p>If you want the responses in another language, update the url
+                  to include the language code e.g.
+                  https://api.sleighwatch.com/api/santa?lang=es-ES (at the
+                  minute only english and spanish is supported)</p>
+              </p>
+              <p>Once the field come back, just pick the one named description (you can use others but this give a nice bit of location information)</p>
+              <p>Set the fetch frequency to a minimum of 5 minutes</p>
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">04</span>
+            <div>
+              <h3>You’re ready to follow Santa!</h3>
+              <p class="guide-copy">
+                If you have any issues please use our feedback link
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="template-callout" aria-labelledby="template-title">
+        <div>
+          <p class="eyebrow">Ready to add it?</p>
+          <h2 id="template-title">Get the SleighWatch template</h2>
+        </div>
+        <!-- Replace # with the published DAKboard template URL when available. -->
+        <a class="button button-light" href="https://dakboard.com/community"
+          >Open the DAKboard site and find the 'Snowy Winter' template for a pre-built example<span aria-hidden="true">→</span></a
+        >
+      </section>
+    </main>
+    <footer><span>© SleighWatch</span><a href="/feedback/">Feedback</a></footer>
+    <script src="/assets/site.js"></script>
+  </body>
+</html>

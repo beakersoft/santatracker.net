@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Grafana.Loki;
 using ILogger = Serilog.ILogger;
 
 namespace SantaTracker.Net.WebApi;
@@ -25,12 +26,24 @@ public class Program
                 (context, builder) =>
                 {
                     builder.AddJsonFile("appsettings.json", false, true)
-                        .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
-                        .AddEnvironmentVariables();
+                        .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true);
+
+                    if (context.HostingEnvironment.IsDevelopment())
+                    {
+                        builder.AddUserSecrets<Program>(optional: true);
+                    }
+
+                    builder.AddEnvironmentVariables();
 
                     hostBuilderContext = context;
-
-                    Log.Logger = CreateLogger(context.HostingEnvironment);
+                })
+            .ConfigureLogging(
+                (context, builder) =>
+                {
+                    // ConfigureAppConfiguration has completed, so User Secrets and
+                    // environment variables are available in the final configuration.
+                    Log.Logger = CreateLogger(context.HostingEnvironment, context.Configuration);
+                    builder.AddSerilog();
 
                     Log.Information(
                         $"""
@@ -42,8 +55,6 @@ public class Program
                          ProcessArchitecture:    {RuntimeInformation.ProcessArchitecture}
                          """);
                 })
-            .ConfigureLogging(
-                builder => { builder.AddSerilog(); })
             .UseDefaultServiceProvider(
                 config =>
                 {
@@ -64,18 +75,32 @@ public class Program
     ///     Setup the logger.
     /// </summary>
     /// <param name="hostContext"></param>
+    /// <param name="configuration"></param>
     /// <returns></returns>
-    private static ILogger CreateLogger(IHostEnvironment hostContext)
+    private static ILogger CreateLogger(IHostEnvironment hostContext, IConfiguration configuration)
     {
         var loggerConfig = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithProperty("API", hostContext.ApplicationName)
             .Enrich.WithProperty("env", hostContext.EnvironmentName)
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .MinimumLevel.Override("System", LogEventLevel.Information)
-            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
             .WriteTo.Console()
             .MinimumLevel.Information();
+
+        var grafanaUrl = configuration["Grafana:Url"];
+        var grafanaUsername = configuration["Grafana:Username"];
+        var grafanaPassword = configuration["Grafana:ApiKey"];
+
+        // Keep local runs working when Grafana credentials have not been configured.
+        if (!string.IsNullOrWhiteSpace(grafanaUrl)
+            && !string.IsNullOrWhiteSpace(grafanaUsername)
+            && !string.IsNullOrWhiteSpace(grafanaPassword))
+        {
+            loggerConfig.WriteTo.GrafanaLoki(
+                grafanaUrl,
+                labels: [new() { Key = "app", Value = hostContext.ApplicationName }],
+                credentials: new() { Login = grafanaUsername, Password = grafanaPassword });
+        }
 
         return loggerConfig.CreateLogger();
     }

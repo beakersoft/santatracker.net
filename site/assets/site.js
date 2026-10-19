@@ -1,0 +1,1 @@
+document.querySelector('.menu')?.addEventListener('click', event => { const button = event.currentTarget; const open = button.getAttribute('aria-expanded') === 'true'; button.setAttribute('aria-expanded', String(!open)); document.body.classList.toggle('nav-open', !open); });

@@ -68,6 +68,10 @@ public class Startup
         app.UseAuthorization();
 
         app.UseEndpoints(
-            endpoints => { endpoints.MapControllers(); });
+            endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+                endpoints.MapControllers();
+            });
     }
 }

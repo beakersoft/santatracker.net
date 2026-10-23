@@ -18,20 +18,27 @@ public static class ServiceCollectionExtensions
                         new OpenApiInfo
                         {
                             Title = "Santa Tracking API",
-                            Version = "v1"
+                            Version = "v1",
+                            Description = """
+        A free, public API for tracking Santa’s journey on Christmas Eve.
+
+        The main endpoint is cached for one minute, so displays should refresh at most once per minute.
+
+        Visit [SleighWatch](https://sleighwatch.com) for integration examples and guides.
+        """
                         });
                     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
+                    c.SchemaFilter<SantaLocationResponseSchemaFilter>();
                 });
     }
 
     public static IServiceCollection AddApiVersionConfig(this IServiceCollection services)
     {
-        services.AddApiVersioning(
+        _ = services.AddApiVersioning(
                 options =>
                 {
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
                     options.ReportApiVersions = true;

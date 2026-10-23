@@ -64,3 +64,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/santa-tracker-api:latest
             ghcr.io/${{ github.repository_owner }}/santa-tracker-api:${{ github.sha }}
+          build-args: |
+            BUILD_NUMBER=${{ github.run_number }}
+            BUILD_SHA=${{ github.sha }}
+            BUILD_TIMESTAMP=${{ github.event.head_commit.timestamp }}

@@ -39,5 +39,11 @@ RUN dotnet publish SantaTracker.Net.WebApi/SantaTracker.Net.WebApi.csproj \
 # Final image
 FROM base AS final
 WORKDIR /app
+ARG BUILD_NUMBER=local
+ARG BUILD_SHA=unknown
+ARG BUILD_TIMESTAMP=unknown
+ENV Build__Number=${BUILD_NUMBER} \
+    Build__Commit=${BUILD_SHA} \
+    Build__Timestamp=${BUILD_TIMESTAMP}
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SantaTracker.Net.WebApi.dll"]

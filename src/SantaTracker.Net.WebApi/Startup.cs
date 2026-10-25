@@ -2,6 +2,7 @@ using System.Text;
 using AspNetCore.Localizer.Json.Extensions;
 using AspNetCore.Localizer.Json.JsonOptions;
 using Microsoft.AspNetCore.Localization;
+using Serilog;
 using SantaTracker.Net.Application;
 using SantaTracker.Net.Application.Features;
 using SantaTracker.Net.Contracts.Constants;
@@ -44,6 +45,9 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+
+        // Emit one structured completion event per request for Loki dashboards.
+        app.UseSerilogRequestLogging();
 
         app.UseRouting();
 

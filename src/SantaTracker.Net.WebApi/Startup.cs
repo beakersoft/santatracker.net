@@ -3,6 +3,7 @@ using AspNetCore.Localizer.Json.Extensions;
 using AspNetCore.Localizer.Json.JsonOptions;
 using Microsoft.AspNetCore.Localization;
 using Serilog;
+using Serilog.Extensions.Hosting;
 using SantaTracker.Net.Application;
 using SantaTracker.Net.Application.Features;
 using SantaTracker.Net.Contracts.Constants;
@@ -15,6 +16,7 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton(_ => new DiagnosticContext(Log.Logger));
         services.AddControllers();
 
         services

@@ -21,7 +21,7 @@ public class GetSantaLocationHandlerTests
     }
 
     [Fact]
-    public async Task GeAsync_WhenRouteIsEmpty_ReturnsNorthPoleDescription()
+    public async Task GeAsyncWhenRouteIsEmptyReturnsNorthPoleDescription()
     {
         // Arrange
         ArrangeRoute();
@@ -39,7 +39,7 @@ public class GetSantaLocationHandlerTests
     }
 
     [Fact]
-    public async Task GeAsync_WhenSantaHasNotStarted_ReturnsNorthPoleDescription()
+    public async Task GeAsyncWhenSantaHasNotStartedReturnsNorthPoleDescription()
     {
         // Arrange
         ArrangeRoute(CreateRoute());
@@ -55,7 +55,7 @@ public class GetSantaLocationHandlerTests
     }
 
     [Fact]
-    public async Task GeAsync_WhenSantaHasFinished_ReturnsDeliveredDescription()
+    public async Task GeAsyncWhenSantaHasFinishedReturnsDeliveredDescription()
     {
         // Arrange
         ArrangeRoute(CreateRoute());
@@ -70,10 +70,10 @@ public class GetSantaLocationHandlerTests
     }
 
     [Fact]
-    public async Task GeAsync_WhenSantaArrivesAtACity_ReturnsCityDetailsAndLocalizedDescription()
+    public async Task GeAsyncWhenSantaArrivesAtACityReturnsCityDetailsAndLocalizedDescription()
     {
         // Arrange
-        var london = Destination("London", "UK", RouteStart, RouteStart.AddHours(1));
+        var london = Destination("London", "UK", RouteStart, RouteStart.AddHours(1), 51.5074, -0.1278);
         ArrangeRoute([london, Destination("Paris", "France", RouteStart.AddHours(2), RouteStart.AddHours(3))]);
 
         // Act
@@ -85,13 +85,15 @@ public class GetSantaLocationHandlerTests
         response.ToCity.ShouldBeEmpty();
         response.Country.ShouldBe("UK");
         response.Description.ShouldBe("SantaIsDeliveringPresentsIn|London|UK");
+        response.Latitude.ShouldBe(51.5074);
+        response.Longitude.ShouldBe(-0.1278);
         _stringLocalizerMock.Verify(
             localizer => localizer["SantaIsDeliveringPresentsIn", It.IsAny<object[]>()],
             Times.Once);
     }
 
     [Fact]
-    public async Task GeAsync_WhenSantaIsAtCityDepartureBoundary_IncludesCityDetails()
+    public async Task GeAsyncWhenSantaIsAtCityDepartureBoundaryIncludesCityDetails()
     {
         // Arrange
         var london = Destination("London", "UK", RouteStart, RouteStart.AddHours(1));
@@ -107,11 +109,11 @@ public class GetSantaLocationHandlerTests
     }
 
     [Fact]
-    public async Task GeAsync_WhenSantaIsBetweenCities_ReturnsOriginAndDestination()
+    public async Task GeAsyncWhenSantaIsBetweenCitiesReturnsOriginAndDestination()
     {
         // Arrange
-        var london = Destination("London", "UK", RouteStart, RouteStart.AddHours(1));
-        var paris = Destination("Paris", "France", RouteStart.AddHours(3), RouteStart.AddHours(4));
+        var london = Destination("London", "UK", RouteStart, RouteStart.AddHours(1), 50, -2);
+        var paris = Destination("Paris", "France", RouteStart.AddHours(3), RouteStart.AddHours(4), 52, 2);
         ArrangeRoute([london, paris, Destination("Rome", "Italy", RouteStart.AddHours(6), RouteStart.AddHours(7))]);
 
         // Act
@@ -123,13 +125,15 @@ public class GetSantaLocationHandlerTests
         response.ToCity.ShouldBe("Paris");
         response.Country.ShouldBe("UK");
         response.Description.ShouldBe("SantaInFlightBetweenCities|London|UK|Paris");
+        response.Latitude.ShouldBe(51);
+        response.Longitude.ShouldBe(0);
         _stringLocalizerMock.Verify(
             localizer => localizer["SantaInFlightBetweenCities", It.IsAny<object[]>()],
             Times.Once);
     }
 
     [Fact]
-    public async Task GeAsync_WhenNoCityOrFlightIntervalMatches_FallsBackToNorthPole()
+    public async Task GeAsyncWhenNoCityOrFlightIntervalMatchesFallsBackToNorthPole()
     {
         // Arrange
         var route = new List<SantaDestinationDto>
@@ -151,14 +155,15 @@ public class GetSantaLocationHandlerTests
 
         // Assert
         response.Status.ShouldBe(SantaStatus.NorthPole.ToString());
-        response.Description.ShouldBe("At North Pole");
+        response.Description.ShouldBe("SantaAtNorthPole");
         response.FromCity.ShouldBeEmpty();
         response.ToCity.ShouldBeEmpty();
         response.Country.ShouldBeEmpty();
+        _stringLocalizerMock.Verify(localizer => localizer["SantaAtNorthPole"], Times.Once);
     }
 
     [Fact]
-    public void GetSantaStatus_WhenScheduleIsFromPreviousYear_ShiftsScheduleToCurrentYear()
+    public void GetSantaStatusWhenScheduleIsFromPreviousYearShiftsScheduleToCurrentYear()
     {
         // Arrange
         var previousYearRoute = new[]
@@ -189,14 +194,17 @@ public class GetSantaLocationHandlerTests
         string city,
         string region,
         DateTime arrivalUtc,
-        DateTime departureUtc) => new()
+        DateTime departureUtc,
+        double latitude = 0,
+        double longitude = 0) => new()
         {
             City = city,
             Region = region,
             Arrival = new DateTimeOffset(arrivalUtc).ToUnixTimeMilliseconds(),
             ArrivalUtc = arrivalUtc,
             Departure = new DateTimeOffset(departureUtc).ToUnixTimeMilliseconds(),
-            DepartureUtc = departureUtc
+            DepartureUtc = departureUtc,
+            Location = new SantaLocationDto { Lat = latitude, Lng = longitude }
         };
 
     private void ConfigureLocalizer()

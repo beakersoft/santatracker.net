@@ -5,9 +5,9 @@
         <PackageReference Include="NodaTime" />
     </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SantaTracker.Net.Application\SantaTracker.Net.Application.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\SantaTracker.Net.Application\SantaTracker.Net.Application.csproj" />
+    </ItemGroup>
 
   <ItemGroup>
     <None Update="Data\santa-route.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />

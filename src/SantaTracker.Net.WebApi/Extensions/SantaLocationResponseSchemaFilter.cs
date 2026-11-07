@@ -28,7 +28,9 @@ public sealed class SantaLocationResponseSchemaFilter : ISchemaFilter
             ["fromCity"] = "London",
             ["toCity"] = string.Empty,
             ["country"] = "United Kingdom",
-            ["status"] = "InFlight"
+            ["status"] = "InFlight",
+            ["latitude"] = 51.5074,
+            ["longitude"] = -0.1278
         };
     }
 }

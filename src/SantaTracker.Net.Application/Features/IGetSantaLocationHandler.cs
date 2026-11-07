@@ -31,16 +31,8 @@ public sealed class GetSantaLocationHandler(
 
         return status switch
         {
-            SantaStatus.NorthPole => new GetSantaLocationResponse
-            {
-                Status = status.ToString(),
-                Description = stringLocalizer["SantaAtNorthPole"]
-            },
-            SantaStatus.Delivered => new GetSantaLocationResponse
-            {
-                Status = status.ToString(),
-                Description = stringLocalizer["SantaHaFinishedDeliveringPresents"]
-            },
+            SantaStatus.NorthPole => GetSantaLocationResponse.NorthPoleLocation(stringLocalizer["SantaAtNorthPole"], status.ToString()),
+            SantaStatus.Delivered => GetSantaLocationResponse.NorthPoleLocation(stringLocalizer["SantaHaFinishedDeliveringPresents"], status.ToString()),
             SantaStatus.InFlight => GetSantaCityAt(utcNow.Value, trackingData.Destinations),
             _ => GetSantaCityAt(utcNow.Value, trackingData.Destinations)
         };
@@ -89,7 +81,9 @@ public sealed class GetSantaLocationHandler(
                 Country = atACity.Region,
                 FromCity = atACity.City,
                 Description = stringLocalizer["SantaIsDeliveringPresentsIn", atACity.City, atACity.Region],
-                Status = SantaStatus.InFlight.ToString()
+                Status = SantaStatus.InFlight.ToString(),
+                Latitude = atACity.Location.Lat,
+                Longitude = atACity.Location.Lng
             };
         }
 
@@ -99,22 +93,34 @@ public sealed class GetSantaLocationHandler(
             if (utcNow > route[i].DepartureUtc &&
                 utcNow < route[i + 1].ArrivalUtc)
             {
+                var origin = route[i];
+                var destination = route[i + 1];
+                var journeyDuration = destination.ArrivalUtc - origin.DepartureUtc;
+                var journeyProgress = (utcNow - origin.DepartureUtc).TotalMilliseconds /
+                                      journeyDuration.TotalMilliseconds;
+
                 return new GetSantaLocationResponse
                 {
-                    FromCity = route[i].City,
-                    ToCity = route[i + 1].City,
-                    Country = route[i].Region,
-                    Description = stringLocalizer["SantaInFlightBetweenCities", route[i].City, route[i].Region, route[i + 1].City],
-                    Status = SantaStatus.InFlight.ToString()
+                    FromCity = origin.City,
+                    ToCity = destination.City,
+                    Country = origin.Region,
+                    Description = stringLocalizer["SantaInFlightBetweenCities", origin.City, origin.Region, destination.City],
+                    Status = SantaStatus.InFlight.ToString(),
+                    Latitude = Interpolate(origin.Location.Lat, destination.Location.Lat, journeyProgress),
+                    Longitude = InterpolateLongitude(origin.Location.Lng, destination.Location.Lng, journeyProgress)
                 };
             }
         }
 
-        // TODO - make this more 'date aware'
-        return new GetSantaLocationResponse
-        {
-            Description = "At North Pole",
-            Status = SantaStatus.NorthPole.ToString()
-        };
+        return GetSantaLocationResponse.NorthPoleLocation(stringLocalizer["SantaAtNorthPole"], SantaStatus.NorthPole.ToString());
+    }
+
+    private static double Interpolate(double origin, double destination, double progress) =>
+        origin + ((destination - origin) * progress);
+
+    private static double InterpolateLongitude(double origin, double destination, double progress)
+    {
+        var difference = ((destination - origin + 540) % 360) - 180;
+        return ((origin + (difference * progress) + 540) % 360) - 180;
     }
 }

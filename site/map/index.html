@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="See Santa's current location on the SleighWatch map.">
+  <link rel="canonical" href="https://sleighwatch.com/map/">
+  <meta property="og:title" content="SleighWatch live Santa map">
+  <meta property="og:description" content="See where Santa is on his journey right now.">
+  <meta property="og:url" content="https://sleighwatch.com/map/">
+  <meta property="og:type" content="website">
+  <title>SleighWatch map — Follow Santa's journey</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="/" aria-label="SleighWatch home">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/">Home</a><a href="/map/" aria-current="page">Map</a><a href="/api/">API</a><a href="/dakboard/">DAKboard</a><a href="/feedback/">Feedback</a></nav></header>
+  <main class="map-page">
+    <section class="map-intro">
+      <p class="eyebrow">Live Santa tracker</p>
+      <h1>Where is Santa now?</h1>
+      <p class="lead">Follow Santa’s journey around the world, powered by the SleighWatch route.</p>
+    </section>
+
+    <section class="map-layout" aria-labelledby="map-title">
+      <div class="map-card">
+        <div id="santa-map" role="application" aria-label="Map showing Santa's current location"></div>
+        <p class="map-attribution">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+      </div>
+      <aside class="location-card" aria-live="polite">
+        <p class="eyebrow">Santa’s status</p>
+        <h2 id="map-title">Finding Santa…</h2>
+        <p id="santa-description" class="location-description">Checking the latest location.</p>
+        <dl class="location-details">
+          <div><dt>Location</dt><dd id="santa-location">—</dd></div>
+          <div><dt>Journey status</dt><dd id="santa-status">—</dd></div>
+        </dl>
+        <p id="test-time-note" class="test-time-note" hidden></p>
+      </aside>
+    </section>
+
+    <section class="map-help">
+      <p class="eyebrow">Try the route</p>
+      <h2>Want to see Christmas Eve?</h2>
+      <p>Add a UTC timestamp to this page’s address to use the test route. For example:</p>
+      <p><code>/map/?time=2026-12-24T21:00:00Z</code></p>
+      <p class="map-help-note">Without <code>time</code>, the map uses the live public API.</p>
+    </section>
+  </main>
+  <footer><span>© SleighWatch</span><a href="https://ko-fi.com/sleighwatch" target="_blank" rel="noopener noreferrer">Support SleighWatch</a><a href="/feedback/">Feedback</a></footer>
+  <script src="/assets/site.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/assets/map.js"></script>
+</body>
+</html>

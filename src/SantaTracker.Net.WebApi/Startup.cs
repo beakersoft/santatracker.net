@@ -18,6 +18,10 @@ public class Startup
     {
         services.AddSingleton(_ => new DiagnosticContext(Log.Logger));
         services.AddControllers();
+        services.AddCors(options =>
+            options.AddPolicy(
+                "PublicApi",
+                policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
         services
             .AddLogging()
@@ -52,6 +56,7 @@ public class Startup
         app.UseSerilogRequestLogging();
 
         app.UseRouting();
+        app.UseCors("PublicApi");
 
         // Configure the pipeline middleware to catch 'Accept-Language' headers and query string parameters for localization
         var localizationOptions = new RequestLocalizationOptions

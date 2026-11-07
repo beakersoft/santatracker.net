@@ -10,6 +10,7 @@
   <meta property="og:url" content="https://sleighwatch.com/">
   <meta property="og:type" content="website">
   <title>SleighWatch — Follow Santa's journey</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="/assets/styles.css">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"SleighWatch","url":"https://sleighwatch.com/","description":"A friendly Santa tracker API for Christmas displays and dashboards."}</script>
 </head>
@@ -17,9 +18,20 @@
   <header class="site-header"><a class="brand" href="/" aria-label="SleighWatch home">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/" aria-current="page">Home</a><a href="/api/">API</a><a href="/dakboard/">DAKboard</a><a href="/feedback/">Feedback</a></nav></header>
   <main>
     <section class="hero"><p class="eyebrow">Santa is on his way</p><h1>Bring a little Christmas magic to your screen.</h1><p class="lead">SleighWatch is a simple, free API for following Santa’s journey — made for family dashboards, displays and festive projects.</p><div class="actions"><a class="button" href="/api/">Explore the API</a><a class="text-link" href="/dakboard/">Set up DAKboard <span aria-hidden="true">→</span></a></div><div class="night" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span class="sleigh">🛷</span></div></section>
+    <section class="tracker" aria-labelledby="tracker-title">
+      <div class="tracker-heading"><div><p class="eyebrow">Live from the North Pole</p><h2 id="tracker-title">Where is Santa?</h2><p class="tracker-intro">Follow Santa’s current position using the SleighWatch API and route data.</p></div><p class="tracker-updated" id="tracker-updated" aria-live="polite">Connecting to SleighWatch…</p></div>
+      <div class="tracker-grid">
+        <div class="tracker-map-wrap"><div id="santa-map" role="region" aria-label="Map showing Santa's current location"></div><p class="map-credit">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></p></div>
+        <aside class="tracker-card" aria-live="polite">
+          <div class="status-label"><span class="status-dot" id="status-dot"></span><span id="santa-status">Loading Santa’s status</span></div>
+          <h3 id="santa-location">Santa is checking the route</h3><p id="santa-description">The live location will appear here in a moment.</p>
+          <form id="time-form" class="time-form"><label for="santa-time">Try a time (your local time)</label><div class="time-controls"><input id="santa-time" type="datetime-local" step="60"><button class="button" type="submit">Show time</button></div><a class="text-link clear-time" id="clear-time" href="/" hidden>Return to live tracking</a><p class="time-hint" id="time-hint">The API receives UTC. Add <code>?time=2026-12-24T07:15:00Z</code> to share a test time.</p></form>
+        </aside>
+      </div>
+    </section>
     <section class="home-preview" aria-labelledby="home-preview-title"><div><p class="eyebrow">Made for family displays</p><h2 id="home-preview-title">See Santa at a glance.</h2><p>Bring SleighWatch into your Christmas dashboard, alongside the things your family already uses every day.</p><a class="text-link" href="/dakboard/">See the DAKboard setup guide <span aria-hidden="true">→</span></a></div><figure><img src="/assets/img/SantaPrep2.png" alt="SleighWatch widget on a DAKboard family display, showing Santa preparing at the North Pole"><figcaption>A SleighWatch status widget on a family dashboard.</figcaption></figure></section>
     <section class="features" aria-label="What SleighWatch offers"><article><span class="icon">⌁</span><h2>Simple by design</h2><p>One public endpoint gives your display Santa’s current status and location.</p></article><article><span class="icon">◷</span><h2>Made for dashboards</h2><p>Responses are cached for a minute, which keeps things quick and considerate.</p></article><article><span class="icon">◎</span><h2>For everyone</h2><p>Use it in a DAKboard, a family project, or your own Christmas creation.</p></article></section>
     <section class="callout"><div><p class="eyebrow">Start here</p><h2>Build something festive.</h2><p>Read the API guide or use our forthcoming DAKboard template to get Santa onto your screen.</p></div><a class="button button-light" href="/api/">Read the API guide</a></section>
   </main>
-  <footer><span>© SleighWatch</span><a href="/feedback/">Feedback</a></footer><script src="/assets/site.js"></script>
+  <footer><span>© SleighWatch</span><a href="/feedback/">Feedback</a></footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="/assets/site.js"></script>
 </body></html>

@@ -19,7 +19,7 @@
   </style>
 </head>
 <body>
-  <header class="site-header"><a class="brand" href="/">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/">Home</a><a href="/map/">Map</a><a href="/api/" aria-current="page">API</a><a href="/dakboard/">DAKboard</a><a href="/feedback/">Feedback</a></nav></header>
+  <header class="site-header"><a class="brand" href="/">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/">Home</a><a href="/map/">Map</a><a href="/widgets/">Widget</a><a href="/api/" aria-current="page">API</a><a href="/dakboard/">DAKboard</a><a href="/feedback/">Feedback</a></nav></header>
   <main class="page guide">
     <p class="eyebrow">Developer guide</p>
     <h1>Put Santa on your screen.</h1>
@@ -45,14 +45,18 @@ document.querySelector('#santa-status').textContent = santa.description;</code><
   "fromCity": "",
   "toCity": "",
   "country": "",
-  "status": "NorthPole"
+  "status": "NorthPole",
+  "latitude": 90,
+  "longitude": 0
 }</code></pre></article>
       <article class="coming"><h3>During the journey</h3><pre><code>{
   "description": "Delivering presents in London, United Kingdom",
   "fromCity": "London",
   "toCity": "",
   "country": "United Kingdom",
-  "status": "InFlight"
+  "status": "InFlight",
+  "latitude": 51.5074,
+  "longitude": -0.1278
 }</code></pre></article>
     </div>
 

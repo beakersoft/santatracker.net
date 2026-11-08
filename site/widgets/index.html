@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Add the free SleighWatch Santa status widget to your website, dashboard or DAKboard display.">
+  <link rel="canonical" href="https://sleighwatch.com/widgets/">
+  <meta property="og:title" content="SleighWatch widget">
+  <meta property="og:description" content="A small, festive Santa status widget for websites and displays.">
+  <meta property="og:url" content="https://sleighwatch.com/widgets/">
+  <meta property="og:type" content="website">
+  <title>SleighWatch widget — Add Santa to your screen</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    .widget-guide { max-width: 900px; }
+    .widget-guide h2 { margin-top: 3.5rem; font-size: 2rem; }
+    .widget-preview { max-width: 440px; margin: 2rem 0; border: 0; border-radius: .85rem; overflow: hidden; }
+    .widget-preview iframe { display: block; width: 100%; height: 180px; border: 0; }
+    .widget-guide pre { overflow: auto; padding: 1.2rem; background: #12384a; border: 1px solid #396477; border-radius: .35rem; color: #fff3d6; }
+    .widget-guide code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .widget-guide .note { padding: 1.2rem; background: #12384a; border-left: 4px solid #edc77b; }
+    .widget-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+    .widget-options article { padding: 1.3rem; background: #12384a; border: 1px solid #396477; border-radius: .5rem; }
+    .widget-options h3 { margin: 0 0 .35rem; }
+    .widget-options p { margin: 0; color: #b8cdd2; }
+    @media (max-width: 700px) { .widget-options { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="/">Sleigh<span>Watch</span></a><button class="menu" aria-expanded="false" aria-controls="navigation">Menu</button><nav id="navigation"><a href="/">Home</a><a href="/map/">Map</a><a href="/widgets/" aria-current="page">Widget</a><a href="/api/">API</a><a href="/dakboard/">DAKboard</a><a href="/feedback/">Feedback</a></nav></header>
+  <main class="page widget-guide">
+    <p class="eyebrow">Free embeddable widget</p>
+    <h1>Put Santa on any screen.</h1>
+    <p class="lead">A compact, festive status card for your website, dashboard, or DAKboard display. No account, API key, or framework required.</p>
+
+    <h2>Live preview</h2>
+    <div class="widget-preview"><iframe src="/widget/v1/?lang=en-US" title="SleighWatch Santa status preview" loading="lazy"></iframe></div>
+
+    <h2>Add it to a website</h2>
+    <p>Paste this wherever your site accepts HTML. The versioned URL is recommended for embeds you want to keep stable.</p>
+    <pre><code>&lt;iframe
+  src="https://sleighwatch.com/widget/v1/?lang=en-US"
+  title="SleighWatch Santa status"
+  width="360"
+  height="180"
+  frameborder="0"&gt;
+&lt;/iframe&gt;</code></pre>
+    <p class="note">The widget updates once a minute to match the SleighWatch API cache. Refreshing it more often will not provide a newer location.</p>
+
+    <h2>Add it to DAKboard</h2>
+    <ol>
+      <li>Create or edit a Custom Screen.</li>
+      <li>Add a <strong>Website/iframe</strong> block.</li>
+      <li>Set its URL to <code>https://sleighwatch.com/widget/v1/?lang=en-US</code>.</li>
+      <li>Resize the block to suit your screen; a 360 × 180 area is a good starting point.</li>
+    </ol>
+    <p>You can also use DAKboard’s Widget block and paste in the website iframe snippet above.</p>
+
+    <h2>Options</h2>
+    <section class="widget-options" aria-label="Widget options">
+      <article><h3>Language</h3><p>Use <code>lang=en-US</code> or <code>lang=es-ES</code> in the widget URL.</p></article>
+      <article><h3>Theme</h3><p>Use <code>theme=night</code> (default) or <code>theme=light</code>.</p></article>
+    </section>
+    <pre><code>https://sleighwatch.com/widget/v1/?lang=es-ES&amp;theme=light</code></pre>
+
+    <h2>Which URL should I use?</h2>
+    <p>Use <code>/widget/v1/</code> for an embed that should keep this design and configuration contract. <code>/widget/</code> is the friendly latest version and will move forward when a future major widget version is released.</p>
+  </main>
+  <footer><span>© SleighWatch</span><a href="https://ko-fi.com/sleighwatch" target="_blank" rel="noopener noreferrer">Support SleighWatch</a><a href="/feedback/">Feedback</a></footer>
+  <script src="/assets/site.js"></script>
+</body>
+</html>

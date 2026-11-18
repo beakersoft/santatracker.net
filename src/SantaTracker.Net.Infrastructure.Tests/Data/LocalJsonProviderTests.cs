@@ -13,6 +13,9 @@ public class LocalJsonProviderTests
         // Assert
         Assert.Equal(128, route.Destinations.Count);
         Assert.Contains(route.Destinations, stop => stop.City == "Kyiv");
+        Assert.Equal(
+            new DateTime(route.DepartureAtUtc.Year, 12, 24, 6, 30, 0, DateTimeKind.Utc),
+            route.DepartureAtUtc);
         Assert.All(route.Destinations, stop =>
         {
             Assert.Equal(DateTimeKind.Utc, stop.ArrivalUtc.Kind);

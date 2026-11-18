@@ -10,6 +10,7 @@ namespace SantaTracker.Net.Application.Tests.Features;
 public class GetSantaLocationHandlerTests
 {
     private static readonly DateTime RouteStart = new(2026, 12, 24, 12, 0, 0, DateTimeKind.Utc);
+    private static readonly DateTime DepartureAt = new(2026, 12, 24, 6, 30, 0, DateTimeKind.Utc);
     private readonly GetSantaLocationHandler _sut;
     private readonly Mock<ITrackingDataProvider> _trackingDataProviderMock = new();
     private readonly Mock<IStringLocalizer> _stringLocalizerMock = new();
@@ -177,11 +178,35 @@ public class GetSantaLocationHandlerTests
             .ShouldBe(SantaStatus.InFlight);
     }
 
+    [Theory]
+    [InlineData(2026, 12, 1, 23)]
+    [InlineData(2026, 12, 23, 1)]
+    [InlineData(2026, 12, 24, 0)]
+    [InlineData(2026, 12, 25, 0)]
+    public async Task GeAsyncReturnsUtcDepartureAndCalendarDaysUntilDeparture(
+        int year, int month, int day, int expectedDaysUntilDeparture)
+    {
+        // Arrange
+        ArrangeRoute(CreateRoute());
+        var utcNow = new DateTime(year, month, day, 5, 0, 0, DateTimeKind.Utc);
+
+        // Act
+        var response = await _sut.GeAsync(utcNow);
+
+        // Assert
+        response.DepartureAtUtc.ShouldBe(DepartureAt);
+        response.DaysUntilDeparture.ShouldBe(expectedDaysUntilDeparture);
+    }
+
     private void ArrangeRoute(List<SantaDestinationDto>? destinations = null)
     {
         _trackingDataProviderMock
             .Setup(provider => provider.GetSantaRouteDataAsync())
-            .ReturnsAsync(new SantaRouteDto { Destinations = destinations ?? [] });
+            .ReturnsAsync(new SantaRouteDto
+            {
+                DepartureAtUtc = DepartureAt,
+                Destinations = destinations ?? []
+            });
     }
 
     private static List<SantaDestinationDto> CreateRoute() =>

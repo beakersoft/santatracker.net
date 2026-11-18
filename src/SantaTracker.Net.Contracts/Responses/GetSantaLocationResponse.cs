@@ -42,6 +42,16 @@ namespace SantaTracker.Net.Contracts.Responses
         /// </summary>
         public double Longitude { get; init; }
 
+        /// <summary>
+        ///     Scheduled North Pole departure for the current route year, in UTC.
+        /// </summary>
+        public DateTime DepartureAtUtc { get; init; }
+
+        /// <summary>
+        ///     Whole UTC calendar days remaining before Santa's scheduled departure.
+        /// </summary>
+        public int DaysUntilDeparture { get; init; }
+
         // North Pole location for when Santa is at the North Pole or has finished delivering presents.
         public static GetSantaLocationResponse NorthPoleLocation(string description, string status)
         {

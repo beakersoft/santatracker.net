@@ -30,9 +30,16 @@ public class LocalJsonProvider() : ITrackingDataProvider
         var baseDate = LocalDatePattern.Iso.Parse(
             $"{SystemClock.Instance.GetCurrentInstant().InUtc().Year}-{route.LocalBaseDate}").Value;
         var arrivalTimePattern = LocalTimePattern.CreateWithInvariantCulture("HH:mm");
+        var departureLocal = baseDate.PlusDays(route.Departure.DayOffset).At(
+            arrivalTimePattern.Parse(route.Departure.DepartureLocal).Value);
+        var departureAtUtc = departureLocal
+            .InZoneStrictly(DateTimeZoneProviders.Tzdb[route.Departure.TimeZone])
+            .ToInstant()
+            .ToDateTimeUtc();
 
         return new()
         {
+            DepartureAtUtc = departureAtUtc,
             Destinations = route.Stops.ConvertAll(
                 x =>
                 {

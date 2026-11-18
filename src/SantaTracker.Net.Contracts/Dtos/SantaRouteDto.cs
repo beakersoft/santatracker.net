@@ -3,6 +3,11 @@ namespace SantaTracker.Net.Contracts.Dtos;
 public sealed class SantaRouteDto
 {
     public List<SantaDestinationDto> Destinations { get; set; } = [];
+
+    /// <summary>
+    /// Scheduled North Pole departure for the current route year, in UTC.
+    /// </summary>
+    public DateTime DepartureAtUtc { get; set; }
 }
 
 public sealed class SantaDestinationDto

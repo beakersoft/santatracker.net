@@ -29,12 +29,18 @@ public sealed class GetSantaLocationHandler(
         utcNow ??= DateTime.UtcNow;
         var status = GetSantaStatus(utcNow.Value, trackingData.Destinations);
 
-        return status switch
+        var location = status switch
         {
             SantaStatus.NorthPole => GetSantaLocationResponse.NorthPoleLocation(stringLocalizer["SantaAtNorthPole"], status.ToString()),
             SantaStatus.Delivered => GetSantaLocationResponse.NorthPoleLocation(stringLocalizer["SantaHaFinishedDeliveringPresents"], status.ToString()),
             SantaStatus.InFlight => GetSantaCityAt(utcNow.Value, trackingData.Destinations),
             _ => GetSantaCityAt(utcNow.Value, trackingData.Destinations)
+        };
+
+        return location with
+        {
+            DepartureAtUtc = trackingData.DepartureAtUtc,
+            DaysUntilDeparture = GetDaysUntilDeparture(trackingData.DepartureAtUtc, utcNow.Value)
         };
     }
 
@@ -66,6 +72,12 @@ public sealed class GetSantaLocationHandler(
     {
         var delta = targetYear - utc.Year;
         return utc.AddYears(delta);
+    }
+
+    private static int GetDaysUntilDeparture(DateTime departureAtUtc, DateTime utcNow)
+    {
+        var days = DateOnly.FromDateTime(departureAtUtc).DayNumber - DateOnly.FromDateTime(utcNow).DayNumber;
+        return Math.Max(days, 0);
     }
 
     private GetSantaLocationResponse GetSantaCityAt(

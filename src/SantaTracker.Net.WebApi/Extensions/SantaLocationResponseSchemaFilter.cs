@@ -30,7 +30,9 @@ public sealed class SantaLocationResponseSchemaFilter : ISchemaFilter
             ["country"] = "United Kingdom",
             ["status"] = "InFlight",
             ["latitude"] = 51.5074,
-            ["longitude"] = -0.1278
+            ["longitude"] = -0.1278,
+            ["departureAtUtc"] = "2026-12-24T06:30:00Z",
+            ["daysUntilDeparture"] = 36
         };
     }
 }
